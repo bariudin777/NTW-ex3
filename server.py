@@ -14,15 +14,18 @@ class Server:
         self.server = socket(AF_INET, SOCK_STREAM)
         self.path = ""
 
+    # connect to the client- preform bind operation to ip and port
     def connect(self):
         server_ip = '127.0.0.1'
         self.server.bind((server_ip, int(self.port)))
         self.server.listen(5)
 
+    # sends the data directly
     def sendR(self):
         client_socket, client_address = self.server.accept()
         self.send(self.file_name.encode())
 
+    # sends the data binary
     def sendB(self):
         while True:
             client_socket, client_address = self.server.accept()
@@ -34,9 +37,11 @@ class Server:
                 payload = f.read(1024)
             f.close()
 
+    #  TODO- what server returns
     def prosseceClinetOutput(self):
         pass
 
+    # connect and down load the file
     def download(self):
         # start connection
         self.connect()
@@ -56,6 +61,7 @@ class Server:
                 # print the data
                 self.prosseceClinetOutput()
 
+    # create a legal path for download
     def create_path(self, input_list, size):
         path = ""
         if input_list[0] is "/":
@@ -68,6 +74,7 @@ class Server:
         path = path[:len(self.path) - 1]  # get rid of the last "/"
         return "./files/" + path
 
+    # prossece the input - init the file name, port and path
     def prosseceServerInput(self, filename):
 
         input_list = filename.split('/')  # ["8080","a","oh_no.jpg" ]
